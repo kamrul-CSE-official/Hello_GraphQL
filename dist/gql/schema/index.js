@@ -9,6 +9,7 @@ export const typeDefs = `
         onStock: Boolean
         categoryId: String
         category: Category
+        reviews: [Reviews]
     }
 
     type Category {

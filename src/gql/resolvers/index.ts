@@ -4,12 +4,17 @@ export const resolvers = {
   Query: {
     products: () => db.products,
     product: (parent: any, args: { productId: string }, context: any) => {
-      return db.products.find((product) => product.id === args.productId) || null;
+      return (
+        db.products.find((product) => product.id === args.productId) || null
+      );
     },
 
     categories: () => db.categories,
     category: (parent: any, args: { categoryId: string }, context: any) => {
-      return db.categories.find((category) => category.id === args.categoryId) || null;
+      return (
+        db.categories.find((category) => category.id === args.categoryId) ||
+        null
+      );
     },
 
     reviews: () => db.reviews,
@@ -18,15 +23,18 @@ export const resolvers = {
     },
   },
   Product: {
-    category: (parent, args, context)=> {
-        // console.log(parent.categoryId)
-        return db.categories.find(categorie => categorie.id === parent.categoryId);
-    }
+    category: ({ categoryId }, args, context) => {
+      // console.log(parent.categoryId)
+      return db.categories.find((categorie) => categorie.id === categoryId);
+    },
+    reviews: ({ id }, args, context) => {
+      return db.reviews.filter((review) => review.productId === id);
+    },
   },
   Category: {
-    products: (parent, args, context)=> {
-        // console.log(parent.id)
-        return db.products.filter(product=> product.categoryId === parent.id);
-    }
-  }
+    products: ({ id }, args, context) => {
+      // console.log(parent.id)
+      return db.products.filter((product) => product.categoryId === id);
+    },
+  },
 };
